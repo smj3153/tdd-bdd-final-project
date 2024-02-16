@@ -110,7 +110,6 @@ class TestProductModel(unittest.TestCase):
         product.id = None
         product.create()
         self.assertIsNotNone(product.id)
-        # Fetch it back
         found_product = Product.find(product.id)
         self.assertEqual(found_product.id, product.id)
         self.assertEqual(found_product.name, product.name)
@@ -123,14 +122,11 @@ class TestProductModel(unittest.TestCase):
         product.id = None
         product.create()
         self.assertIsNotNone(product.id)
-        # Change it an save it
         product.description = "testing"
         original_id = product.id
         product.update()
         self.assertEqual(product.id, original_id)
         self.assertEqual(product.description, "testing")
-        # Fetch it back and make sure the id hasn't changed
-        # but the data did change
         products = Product.all()
         self.assertEqual(len(products), 1)
         self.assertEqual(products[0].id, original_id)
@@ -141,7 +137,6 @@ class TestProductModel(unittest.TestCase):
         product = ProductFactory()
         product.create()
         self.assertEqual(len(Product.all()), 1)
-        # delete the product and make sure it isn't in the database
         product.delete()
         self.assertEqual(len(Product.all()), 0)
     
@@ -149,11 +144,9 @@ class TestProductModel(unittest.TestCase):
         """It should List all Products in the database"""
         products = Product.all()
         self.assertEqual(products, [])
-        # Create 5 Products
         for _ in range(5):
             product = ProductFactory()
             product.create()
-        # See if we get back 5 products
         products = Product.all()
         self.assertEqual(len(products), 5)
     
